@@ -91,18 +91,18 @@ public class ImportWizard {
     // System.out.println("Processing jar/zip file: " + classPathFile);
     
     try {
-      ZipFile zipFile = new ZipFile(classPathFile);
-      Enumeration enum = zipFile.entries();
-      while (enum.hasMoreElements()) {
-	ZipEntry zipEntry = (ZipEntry)enum.nextElement();
-	String current = zipEntry.getName();
-	if (current.toLowerCase().endsWith(".class")) {
-	  current = current.substring(0, current.length() - 6);
-	  current = current.replace('/', '.');
-	  current = current.replace('\\', '.');
-	  classList.addElement(current);
-	}
-      }
+		ZipFile zipFile = new ZipFile(classPathFile);
+		Enumeration en = zipFile.entries();
+		while (en.hasMoreElements()) {
+			ZipEntry zipEntry = (ZipEntry)en.nextElement();
+			String current = zipEntry.getName();
+			if (current.toLowerCase().endsWith(".class")) {
+				current = current.substring(0, current.length() - 6);
+				current = current.replace('/', '.');
+				current = current.replace('\\', '.');
+				classList.addElement(current);
+			}
+		}
     } catch (Exception ex) {
       System.err.println("Problem opening " + classPathFile + " with zip.");
     }
