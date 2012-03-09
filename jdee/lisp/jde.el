@@ -61,7 +61,7 @@
    (defalias 'custom-set-default 'set-default))
 
 ;; Use the full Java 1.5 grammar to parse Java files
-(autoload 'wisent-java-default-setup "wisent-java" "Hook run to setup Semantic in `java-mode'." nil nil)
+(autoload 'wisent-java-default-setup "semantic/wisent/java-tags" "Hook run to setup Semantic in `java-mode'." nil nil)
 
 (defun jde-semantic-require (sym)
   (cond ((string= sym 'senator)
@@ -635,26 +635,6 @@ use in testing the JDEE's java classes."
   :group 'jde-project
   :type 'boolean)
 
-(defcustom jde-enable-senator t
-  "Enable senator minor mode.
-This mode provides Java-aware buffer navigation and searching
-commands."
-  :group 'jde-project
-  :type 'boolean
-  :set '(lambda (sym val)
-	  (set-default sym val)
-	  (unless (or (not (featurep 'jde)) ;; skip initial set.
-		      jde-loading-project ;; skip when set by project loading system
-		      (and (boundp 'global-senator-minor-mode)
-			   global-senator-minor-mode))
-	    (mapc
-	     (lambda (buff)
-	       (save-excursion
-		 (set-buffer buff)
-		 (senator-minor-mode (if val 1 -1))))
-	     (jde-get-java-source-buffers)))))
-
-
 (defcustom jde-enable-abbrev-mode nil
 "*Enable expansion of abbreviations in jde-mode.
 See `jde-mode-abbreviations' for more information."
@@ -769,7 +749,7 @@ comment."
 	 (if (featurep 'xemacs) abbrev t)
 	 (lambda ()
 	   (unless (jde-parse-comment-or-quoted-p)
-	     (delete-backward-char (length abbrev)) ; remove abbreviation and
+	     (delete-char (* -1 (length abbrev))) ; remove abbreviation and
 	     (insert expansion)))                   ; insert expansion
 	 0)))
    jde-mode-abbreviations)

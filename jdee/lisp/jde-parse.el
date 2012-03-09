@@ -25,6 +25,7 @@
 
 (jde-semantic-require 'semantic-ctxt)
 (jde-semantic-require 'semantic-sb)
+(eval-when-compile (require 'cl))
 (if (< emacs-major-version 23)
     (progn
       (require 'avltree)  ;; use elib's avltree with local compatibility kludges

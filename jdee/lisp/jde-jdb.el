@@ -718,7 +718,7 @@ expression at poing")
 			     msg
 			     (match-beginning 1)
 			     (match-end 1)))
-		     (line (string-to-int
+		     (line (string-to-number
 			    (substring
 			     msg
 			     (match-beginning 2)
@@ -1807,29 +1807,16 @@ the debuggee process at (e.g., jdbconn)."
   "Non-nil if jdb minor mode is enabled.")
 (make-variable-buffer-local 'jde-jdb-minor-mode)
 
-(defun jde-jdb-minor-mode (&optional arg)
-  "Toggle jdb minor mode.
-With prefix argument ARG, turn on if positive, otherwise off..
-
-\\{jde-jdb-mode-map}"
-  (interactive
-   (list (or current-prefix-arg
-	     (if jde-jdb-minor-mode 0 1))))
-
-  (setq jde-jdb-minor-mode
-	(if arg
-	    (>
-	     (prefix-numeric-value arg)
-	     0)
-	  (not jde-jdb-minor-mode)))
-
+(define-minor-mode jde-jdb-minor-mode 
+  "jdb minor mode."
+  :global t :keymap jde-jdb-mode-map
   (if jde-jdb-minor-mode
       (if (featurep 'xemacs)
 	    (easy-menu-add jde-jdb-xemacs-menu-spec jde-jdb-mode-map))
     (if (featurep 'xemacs)
       (easy-menu-remove jde-jdb-xemacs-menu-spec))))
 
-(semantic-add-minor-mode 'jde-jdb-minor-mode " jdb" jde-jdb-mode-map)
+(semantic-add-minor-mode 'jde-jdb-minor-mode " jdb")
 
 
 ;; (fmakunbound 'jde-jdb-key-bindings)
@@ -1889,7 +1876,7 @@ You can use the notation [f1], [f2], etc., to specify function keys."
 and converts the result to an integer."
   (if (string-match "[^[:digit:]]" number)
       (setq number (replace-match "" nil nil number)))
-  (string-to-int number))
+  (string-to-number number))
 
 (provide 'jde-jdb)
 

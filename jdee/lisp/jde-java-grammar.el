@@ -55,29 +55,19 @@ Should be run when Semantic is ready to parse, that is, via
 	  (semantic-idle-scheduler-mode 1)))
      (t
       ;; Default to JDE's auto-parse
-      (when jde-xemacsp
-	(make-local-hook 'semantic-change-hooks))
+      (if (featurep 'xemacs) (make-local-hook 'semantic-change-hooks))
       (add-hook 'semantic-change-hooks
 		'jde-parse-buffer-changed-hook t t))))
 
   ;; Track full reparses
-  (when jde-xemacsp
-    (make-local-hook 'semantic-after-toplevel-cache-change-hook))
+  (if (featurep 'xemacs) (make-local-hook 'semantic-after-toplevel-cache-change-hook))
   (add-hook 'semantic-after-toplevel-cache-change-hook
 	    'jde-parse-update-after-parse nil t)
 
   ;; Track partial reparses
-  (when jde-xemacsp
-    (make-local-hook 'semantic-after-partial-cache-change-hook))
+  (if (featurep 'xemacs) (make-local-hook 'semantic-after-partial-cache-change-hook))
   (add-hook 'semantic-after-partial-cache-change-hook
 	    'jde-parse-update-after-partial-parse nil t)
-
-  (when jde-enable-senator
-    ;; Enable `senator-minor-mode' in this buffer, unless it is
-    ;; already enabled globally (since Semantic 1.4beta12).
-    (or (and (boundp 'global-senator-minor-mode)
-	     global-senator-minor-mode)
-	(senator-minor-mode 1)))
 
   ;; imenu & speedbar setup
   (jde-imenu-setup)

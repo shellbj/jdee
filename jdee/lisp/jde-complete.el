@@ -56,6 +56,7 @@
 ;;jde-eldoc for completion signatures
 
 (require 'eldoc)
+(require 'semantic/idle)
 
 (eval-when-compile
   (jde-semantic-require 'semantic-idle))

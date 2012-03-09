@@ -171,30 +171,18 @@ jar program is on the system path."
 
 (make-variable-buffer-local 'jde-plugin-minor-mode)
 
-(defun jde-plugin-minor-mode (&optional arg)
-  "Toggle JDEE plugin minor mode.
-With prefix argument ARG, turn on if positive, otherwise off..
+(define-minor-mode jde-plugin-minor-mode
+  "JDEE plugin minor mode."
+  :global t :keymap jde-plugin-mode-map
+  (if jde-plugin-minor-mode
+    (if (featurep 'xemacs)
+	(let ((menu-spec (jde-plugin-make-menu-spec)))
+	  (if menu-spec
+	      (if jde-plugin-minor-mode
+		  (easy-menu-add menu-spec jde-plugin-mode-map)
+		(easy-menu-remove menu-spec)))))))
 
-\\{jde-plugin-mode-map}"
-  (interactive
-   (list (or current-prefix-arg
-	     (if jde-plugin-minor-mode 0 1))))
-
-  (setq jde-plugin-minor-mode
-	(if arg
-	    (>
-	     (prefix-numeric-value arg)
-	     0)
-	  (not jde-plugin-minor-mode)))
-
-  (if (featurep 'xemacs)
-      (let ((menu-spec (jde-plugin-make-menu-spec)))
-	(if menu-spec
-	    (if jde-plugin-minor-mode
-		(easy-menu-add menu-spec jde-plugin-mode-map)
-	      (easy-menu-remove menu-spec))))))
-
-(semantic-add-minor-mode 'jde-plugin-minor-mode " plugin" jde-plugin-mode-map)
+(semantic-add-minor-mode 'jde-plugin-minor-mode " plugin")
 
 
 (provide 'jde-plugins)

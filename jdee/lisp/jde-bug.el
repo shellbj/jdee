@@ -554,23 +554,11 @@ consuming and slows down stepping through the code."
   "Non-nil if JDEBug minor mode is enabled.")
 (make-variable-buffer-local 'jde-bug-minor-mode)
 
-(defun jde-bug-minor-mode (&optional arg)
-  "Toggle JDEbug minor mode.
-With prefix argument ARG, turn on if positive, otherwise off.
+(define-minor-mode jde-bug-minor-mode
+  "JDEbug minor mode."
+  :global t :keymap jde-bug-mode-map)
 
-\\{jde-bug-mode-map}"
-  (interactive
-   (list (or current-prefix-arg
-	     (if jde-bug-minor-mode 0 1))))
-
-  (setq jde-bug-minor-mode
-	(if arg
-	    (> (prefix-numeric-value arg) 0)
-	  (not jde-bug-minor-mode)))
-
-  (run-hook-with-args 'jde-bug-minor-mode-hook jde-bug-minor-mode))
-
-(semantic-add-minor-mode 'jde-bug-minor-mode " JDEbug" jde-bug-mode-map)
+(semantic-add-minor-mode 'jde-bug-minor-mode " JDEbug")
 
 ;; (fmakunbound 'jde-bug-key-bindings)
 (defcustom jde-bug-key-bindings

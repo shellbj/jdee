@@ -37,7 +37,7 @@
 (require 'tempo)
 (eval-when-compile
   (require 'jde))
-(jde-semantic-require 'semantic-java)
+(require 'semantic/java)
 (require 'regexp-opt)
 
 (eval-when-compile
